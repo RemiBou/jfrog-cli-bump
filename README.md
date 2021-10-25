@@ -25,13 +25,6 @@ Uninstalling a plugin
     - Example:
     ```
   $ jfrog bump vcp https://mybitbucket.com/rest
-  
-  NEW GREETING: HELLO WORLD!
-  NEW GREETING: HELLO WORLD!
-  ```
-
-### Environment variables
-* HELLO_FROG_GREET_PREFIX - Adds a prefix to every greet **[Default: New greeting: ]**
 
 ## Additional info
 None.
