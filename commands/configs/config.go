@@ -3,6 +3,7 @@ package configs
 import (
 	"fmt"
 	"github.com/jfrog/jfrog-cli-core/v2/plugins/components"
+	"github.com/jfrog/jfrog-client-go/utils/log"
 )
 
 type vcsConfig struct {
@@ -64,8 +65,13 @@ func (s configService) vcsCmd(c *components.Context) error {
 	if err != nil {
 		return err
 	}
-	return s.saver.save(vcsConfig{
+	err = s.saver.save(vcsConfig{
 		Url:   url,
 		Token: token,
 	})
+	if err != nil {
+		return err
+	}
+	log.Output("Configuration saved")
+	return err
 }
