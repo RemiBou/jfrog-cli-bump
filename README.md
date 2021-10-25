@@ -1,33 +1,30 @@
-# hello-frog
+# bump 
 
 ## About this plugin
-This plugin is a template and a functioning example for a basic JFrog CLI plugin. 
-This README shows the expected structure of your plugin's README.
+This plugin provides a way to automatically bump your dependencies
 
 ## Installation with JFrog CLI
 Installing the latest version:
 
-`$ jfrog plugin install hello-frog`
+`$ jfrog plugin install bump`
 
 Installing a specific version:
 
-`$ jfrog plugin install hello-frog@version`
+`$ jfrog plugin install bump@version`
 
 Uninstalling a plugin
 
-`$ jfrog plugin uninstall hello-frog`
+`$ jfrog plugin uninstall bump`
 
 ## Usage
 ### Commands
-* hello
+* vcs : configure your vcs provider (only Bitbucket cloud available now)
     - Arguments:
-        - addressee - The name of the person you would like to greet.
-    - Flags:
-        - shout: Makes output uppercase **[Default: false]**
-        - repeat: Greets multiple times **[Default: 1]**
+        - url : your bitbucket cloud rest url
+        - token : your personnal access token
     - Example:
     ```
-  $ jfrog hello-frog hello world --shout --repeat=2
+  $ jfrog bump vcp https://mybitbucket.com/rest
   
   NEW GREETING: HELLO WORLD!
   NEW GREETING: HELLO WORLD!

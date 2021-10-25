@@ -57,7 +57,10 @@ func (s configService) vcsCmd(c *components.Context) error {
 	if token == "" {
 		return fmt.Errorf("token required")
 	}
-	err := s.checker.check(url, token)
+	err := s.checker.check(vcsConfig{
+		Url:   url,
+		Token: token,
+	})
 	if err != nil {
 		return err
 	}

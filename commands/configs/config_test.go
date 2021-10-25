@@ -42,14 +42,14 @@ func TestVcsCmdCheckConnectionReturnErr(t *testing.T) {
 	service := createServiceWithFakeDeps()
 	expected := fmt.Errorf("an error")
 	configChecker := service.checker.(*fakeVcsConfigChecker)
-	configChecker.nextResult = expected
+	configChecker.nextErr = expected
 	err := service.vcsCmd(&components.Context{Arguments: []string{
 		"https://google.com",
 		"my-token",
 	}})
 	require.Equal(t, expected, err)
-	require.Equal(t, "https://google.com", configChecker.lastUrl)
-	require.Equal(t, "my-token", configChecker.lastToken)
+	require.Equal(t, "https://google.com", configChecker.lastParam.Url)
+	require.Equal(t, "my-token", configChecker.lastParam.Token)
 }
 
 func TestVcsCmdSavesInJfrogCliCfg(t *testing.T) {
@@ -65,16 +65,14 @@ func TestVcsCmdSavesInJfrogCliCfg(t *testing.T) {
 }
 
 type fakeVcsConfigChecker struct {
-	nextResult error
-	lastUrl    string
-	lastToken  string
+	nextErr   error
+	lastParam vcsConfig
 }
 
-func (f *fakeVcsConfigChecker) check(url string, token string) error {
-	err := f.nextResult
-	f.lastUrl = url
-	f.lastToken = token
-	f.nextResult = nil
+func (f *fakeVcsConfigChecker) check(config vcsConfig) error {
+	err := f.nextErr
+	f.lastParam = config
+	f.nextErr = nil
 	return err
 }
 
