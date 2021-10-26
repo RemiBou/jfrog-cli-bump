@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/jfrog/jfrog-cli-core/v2/plugins"
 	"github.com/jfrog/jfrog-cli-core/v2/plugins/components"
-	"github.com/jfrog/jfrog-cli-plugin-template/commands/configs"
+	"github.com/jfrog/jfrog-cli-plugin-template/commands/configs/set_vcs"
 )
 
 func main() {
@@ -21,6 +21,6 @@ func getApp() components.App {
 
 func getCommands() []components.Command {
 	return []components.Command{
-		configs.GetSetVcsCommand(),
+		set_vcs.GetSetVcsCommand(),
 	}
 }

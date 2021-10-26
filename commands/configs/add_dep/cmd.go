@@ -1,4 +1,4 @@
-package configs
+package add_dep
 
 import (
 	"fmt"
@@ -12,7 +12,9 @@ func GetAddDepCommand() components.Command {
 		Aliases:     []string{"d"},
 		Arguments:   getDepArguments(),
 		Action: func(c *components.Context) error {
-			service := addDepService{}
+			service := addDepService{
+				saver: defaultDepSaver{},
+			}
 			return service.addDepCmd(c)
 		},
 	}
@@ -31,7 +33,13 @@ func getDepArguments() []components.Argument {
 	}
 }
 
+type depConfig struct {
+	url        string
+	dependency string
+}
+
 type addDepService struct {
+	saver depSaver
 }
 
 func (s addDepService) addDepCmd(c *components.Context) error {
@@ -46,6 +54,13 @@ func (s addDepService) addDepCmd(c *components.Context) error {
 	dependency := c.Arguments[1]
 	if dependency == "" {
 		return fmt.Errorf("dependency required")
+	}
+	err := s.saver.add(depConfig{
+		url:        url,
+		dependency: dependency,
+	})
+	if err != nil {
+		return err
 	}
 	return nil
 }

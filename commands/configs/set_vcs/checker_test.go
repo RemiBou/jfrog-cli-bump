@@ -1,4 +1,4 @@
-package configs
+package set_vcs
 
 import (
 	"github.com/stretchr/testify/require"
