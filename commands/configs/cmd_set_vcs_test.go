@@ -14,8 +14,8 @@ func TestVcsCmdRequire2Arguments(t *testing.T) {
 	require.Equal(t, vcsConfig{}, service.saver.(*fakeVcsConfigSaver).lastParam)
 }
 
-func createServiceWithFakeDeps() configService {
-	return configService{
+func createServiceWithFakeDeps() setVcsService {
+	return setVcsService{
 		saver:   &fakeVcsConfigSaver{},
 		checker: &fakeVcsConfigChecker{},
 	}

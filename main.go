@@ -21,6 +21,6 @@ func getApp() components.App {
 
 func getCommands() []components.Command {
 	return []components.Command{
-		configs.GetConfigCommand(),
+		configs.GetSetVcsCommand(),
 	}
 }

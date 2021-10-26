@@ -3,6 +3,7 @@ package configs
 import (
 	"encoding/json"
 	"github.com/jfrog/jfrog-cli-core/v2/utils/coreutils"
+	"github.com/jfrog/jfrog-client-go/utils/log"
 	"io/ioutil"
 	"path/filepath"
 )
@@ -33,6 +34,7 @@ func (i defaultVcsConfigSaver) read() (vcsConfig, error) {
 	if err != nil {
 		return vcsConfig{}, err
 	}
+	log.Info("Configuration saved to " + filePath)
 	return *res, nil
 }
 

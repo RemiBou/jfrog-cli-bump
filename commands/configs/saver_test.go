@@ -2,12 +2,16 @@ package configs
 
 import (
 	"github.com/jfrog/jfrog-cli-core/v2/utils/coreutils"
+	log2 "github.com/jfrog/jfrog-cli-core/v2/utils/log"
 	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"os"
 	"testing"
 )
 
+func init() {
+	log2.SetDefaultLogger()
+}
 func TestSaveRead(t *testing.T) {
 	dir, err := ioutil.TempDir("", "bump-conf")
 	defer os.RemoveAll(dir)

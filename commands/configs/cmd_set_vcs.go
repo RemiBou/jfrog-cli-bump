@@ -3,7 +3,6 @@ package configs
 import (
 	"fmt"
 	"github.com/jfrog/jfrog-cli-core/v2/plugins/components"
-	"github.com/jfrog/jfrog-client-go/utils/log"
 )
 
 type vcsConfig struct {
@@ -11,19 +10,19 @@ type vcsConfig struct {
 	Token string
 }
 
-type configService struct {
+type setVcsService struct {
 	saver   vcsConfigSaver
 	checker vscConfigChecker
 }
 
-func GetConfigCommand() components.Command {
+func GetSetVcsCommand() components.Command {
 	return components.Command{
-		Name:        "vcs",
+		Name:        "set-vcs",
 		Description: "Configure the VCS connection for the bump plugin.",
 		Aliases:     []string{"v"},
 		Arguments:   getVcsArguments(),
 		Action: func(c *components.Context) error {
-			service := configService{
+			service := setVcsService{
 				saver:   defaultVcsConfigSaver{},
 				checker: defaultVcsConfigChecker{},
 			}
@@ -45,7 +44,7 @@ func getVcsArguments() []components.Argument {
 	}
 }
 
-func (s configService) vcsCmd(c *components.Context) error {
+func (s setVcsService) vcsCmd(c *components.Context) error {
 	// validate params
 	if len(c.Arguments) != 2 {
 		return fmt.Errorf("2 arguments requires : url, token")
@@ -72,6 +71,5 @@ func (s configService) vcsCmd(c *components.Context) error {
 	if err != nil {
 		return err
 	}
-	log.Output("Configuration saved")
 	return err
 }
