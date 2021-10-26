@@ -34,8 +34,8 @@ func getDepArguments() []components.Argument {
 }
 
 type depConfig struct {
-	url        string
-	dependency string
+	Url        string
+	Dependency string
 }
 
 type addDepService struct {
@@ -56,8 +56,8 @@ func (s addDepService) addDepCmd(c *components.Context) error {
 		return fmt.Errorf("dependency required")
 	}
 	err := s.saver.add(depConfig{
-		url:        url,
-		dependency: dependency,
+		Url:        url,
+		Dependency: dependency,
 	})
 	if err != nil {
 		return err

@@ -34,7 +34,6 @@ func (i defaultVcsConfigSaver) read() (vcsConfig, error) {
 	if err != nil {
 		return vcsConfig{}, err
 	}
-	log.Info("Configuration saved to " + filePath)
 	return *res, nil
 }
 
@@ -47,7 +46,12 @@ func (defaultVcsConfigSaver) save(vcsConfig vcsConfig) error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(confFilePath, content, 0600)
+	err = ioutil.WriteFile(confFilePath, content, 0600)
+	if err != nil {
+		return err
+	}
+	log.Info("Configuration saved to " + confFilePath)
+	return err
 }
 
 func getConfFilePath() (string, error) {

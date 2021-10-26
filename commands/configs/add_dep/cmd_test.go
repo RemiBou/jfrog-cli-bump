@@ -30,8 +30,8 @@ func TestAddDepSave(t *testing.T) {
 	err := service.addDepCmd(&components.Context{Arguments: []string{"https://google.com", "jfrog.com/my-dependency"}})
 	require.NoError(t, err)
 	require.Equal(t, depConfig{
-		url:        "https://google.com",
-		dependency: "jfrog.com/my-dependency",
+		Url:        "https://google.com",
+		Dependency: "jfrog.com/my-dependency",
 	}, service.saver.(*fakeSaver).lastParam)
 }
 
