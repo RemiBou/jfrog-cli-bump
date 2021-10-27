@@ -3,6 +3,7 @@ package add_dep
 import (
 	"fmt"
 	"github.com/jfrog/jfrog-cli-core/v2/plugins/components"
+	"github.com/jfrog/jfrog-cli-plugin-template/commands/configs"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
@@ -21,47 +22,41 @@ func TestAddDepCmdFailIfEmptyUrl(t *testing.T) {
 
 func TestAddDepCmdFailIfEmptyDependency(t *testing.T) {
 	service := createServiceWithFakeDep()
-	err := service.addDepCmd(&components.Context{Arguments: []string{"https://google.com", ""}})
+	err := service.addDepCmd(&components.Context{Arguments: []string{"/path/go.mod", ""}})
 	require.Error(t, err)
 }
 
 func TestAddDepSave(t *testing.T) {
 	service := createServiceWithFakeDep()
-	err := service.addDepCmd(&components.Context{Arguments: []string{"https://google.com", "jfrog.com/my-dependency"}})
+	err := service.addDepCmd(&components.Context{Arguments: []string{"/path/go.mod", "jfrog.com/my-dependency"}})
 	require.NoError(t, err)
-	require.Equal(t, depConfig{
-		Url:        "https://google.com",
+	require.Equal(t, configs.DepConfig{
+		Path:       "/path/go.mod",
 		Dependency: "jfrog.com/my-dependency",
-	}, service.saver.(*fakeSaver).lastParam)
+	}, service.configService.(*configs.FakeConfigService).LastAddDepParam)
 }
 
-func TestAddDepReturnErrIfSaveErr(t *testing.T) {
+func TestAddDepFailsIfCheckFails(t *testing.T) {
 	service := createServiceWithFakeDep()
 	expected := fmt.Errorf("an error")
-	service.saver.(*fakeSaver).nextErr = expected
-	err := service.addDepCmd(&components.Context{Arguments: []string{"https://google.com", "jfrog.com/my-dependency"}})
+	service.bitbucketClient.(*configs.FakeClient).NextErr = expected
+	service.configService.(*configs.FakeConfigService).NextReadVcs = configs.VcsConfig{
+		Url:   "https://google.com",
+		Token: "token",
+	}
+	err := service.addDepCmd(&components.Context{Arguments: []string{"/path/go.mod", "jfrog.com/my-dependency"}})
 	require.Equal(t, expected, err)
+	require.Equal(t, configs.ExistsParams{
+		Url:   "https://google.com",
+		Token: "token",
+		Path:  "/path/go.mod",
+	}, service.bitbucketClient.(*configs.FakeClient).LastParamExists)
+	require.Equal(t, configs.DepConfig{}, service.configService.(*configs.FakeConfigService).LastAddDepParam)
 }
 
 func createServiceWithFakeDep() addDepService {
 	return addDepService{
-		saver: &fakeSaver{},
+		configService:   &configs.FakeConfigService{},
+		bitbucketClient: &configs.FakeClient{},
 	}
-}
-
-type fakeSaver struct {
-	nextErr   error
-	lastParam depConfig
-	nextRead  []depConfig
-}
-
-func (f *fakeSaver) add(config depConfig) error {
-	f.lastParam = config
-	err := f.nextErr
-	f.nextErr = nil
-	return err
-}
-
-func (f *fakeSaver) read() ([]depConfig, error) {
-	panic("implement me")
 }

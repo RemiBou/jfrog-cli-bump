@@ -3,16 +3,12 @@ package set_vcs
 import (
 	"fmt"
 	"github.com/jfrog/jfrog-cli-core/v2/plugins/components"
+	"github.com/jfrog/jfrog-cli-plugin-template/commands/configs"
 )
 
-type vcsConfig struct {
-	Url   string
-	Token string
-}
-
 type setVcsService struct {
-	saver   vcsConfigSaver
-	checker vscConfigChecker
+	configService   configs.ConfigService
+	bitbucketClient configs.BitbucketClient
 }
 
 func GetSetVcsCommand() components.Command {
@@ -23,8 +19,8 @@ func GetSetVcsCommand() components.Command {
 		Arguments:   getVcsArguments(),
 		Action: func(c *components.Context) error {
 			service := setVcsService{
-				saver:   defaultVcsConfigSaver{},
-				checker: defaultVcsConfigChecker{},
+				configService:   configs.NewVcsConfigService(),
+				bitbucketClient: configs.NewBitbucketClient(),
 			}
 			return service.vcsCmd(c)
 		},
@@ -36,6 +32,10 @@ func getVcsArguments() []components.Argument {
 		{
 			Name:        "url",
 			Description: "The bitbucket server url.",
+		},
+		{
+			Name:        "username",
+			Description: "The bitbucket username.",
 		},
 		{
 			Name:        "token",
@@ -57,14 +57,11 @@ func (s setVcsService) vcsCmd(c *components.Context) error {
 	if token == "" {
 		return fmt.Errorf("token required")
 	}
-	err := s.checker.check(vcsConfig{
-		Url:   url,
-		Token: token,
-	})
+	err := s.bitbucketClient.TestConnection(url, token)
 	if err != nil {
 		return err
 	}
-	err = s.saver.save(vcsConfig{
+	err = s.configService.SaveVcs(configs.VcsConfig{
 		Url:   url,
 		Token: token,
 	})
