@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/jfrog/jfrog-cli-bump/commands/configs/add_dep"
+	"github.com/jfrog/jfrog-cli-bump/commands/configs/set_vcs"
 	"github.com/jfrog/jfrog-cli-core/v2/plugins"
 	"github.com/jfrog/jfrog-cli-core/v2/plugins/components"
-	"github.com/jfrog/jfrog-cli-plugin-template/commands/configs/add_dep"
-	"github.com/jfrog/jfrog-cli-plugin-template/commands/configs/set_vcs"
 )
 
 func main() {

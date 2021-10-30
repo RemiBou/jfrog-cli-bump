@@ -2,8 +2,8 @@ package set_vcs
 
 import (
 	"fmt"
+	"github.com/jfrog/jfrog-cli-bump/commands/configs"
 	"github.com/jfrog/jfrog-cli-core/v2/plugins/components"
-	"github.com/jfrog/jfrog-cli-plugin-template/commands/configs"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
@@ -15,8 +15,8 @@ func TestVcsCmdRequire2Arguments(t *testing.T) {
 	require.Equal(t, configs.VcsConfig{}, service.configService.(*configs.FakeConfigService).LastSaveVcsParam)
 }
 
-func createServiceWithFakeDeps() setVcsService {
-	return setVcsService{
+func createServiceWithFakeDeps() *setVcsService {
+	return &setVcsService{
 		configService:   &configs.FakeConfigService{},
 		bitbucketClient: &configs.FakeClient{},
 	}

@@ -2,9 +2,9 @@ package add_dep
 
 import (
 	"fmt"
+	"github.com/jfrog/jfrog-cli-bump/commands/configs"
 	"github.com/jfrog/jfrog-cli-core/v2/plugins/components"
 	log2 "github.com/jfrog/jfrog-cli-core/v2/utils/log"
-	"github.com/jfrog/jfrog-cli-plugin-template/commands/configs"
 	"github.com/jfrog/jfrog-client-go/utils/log"
 )
 

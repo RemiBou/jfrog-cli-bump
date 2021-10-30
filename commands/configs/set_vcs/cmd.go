@@ -2,8 +2,8 @@ package set_vcs
 
 import (
 	"fmt"
+	"github.com/jfrog/jfrog-cli-bump/commands/configs"
 	"github.com/jfrog/jfrog-cli-core/v2/plugins/components"
-	"github.com/jfrog/jfrog-cli-plugin-template/commands/configs"
 )
 
 type setVcsService struct {
